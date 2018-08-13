@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dj.dao.SuccessKillDao">
+    <insert id="insertSuccessKill">
+        <!-- 当出现主键冲突时，不报错，返回零 -->
+        insert ignore into success_kill(s_id,user_phone,state,user_name)
+        value (#{sId},#{userPhone},0,#{userName})
+    </insert>
+    <select id="queryByIdWithSkill" resultType="SuccessKill">
+        select
+          sk.s_id,
+          sk.user_phone,
+          sk.create_time,
+          sk.state,
+          s.s_id "skill.s_id",
+          s.name "skill.name",
+          s.number "skill.number",
+          s.start_time "skill.start_time",
+          s.end_time "skill.end_time",
+          s.create_time "skill.create_time"
+        from success_kill sk
+        inner join skill s on sk.s_id = s.s_id
+        where sk.s_id = #{sId} and sk.user_phone = #{userName}
+    </select>
+    <select id="queryByUserNameWithSkill" resultType="SuccessKill">
+        select
+          sk.s_id,
+          sk.user_phone,
+          sk.create_time,
+          sk.state,
+          sk.user_name,
+          s.s_id "skill.s_id",
+          s.name "skill.name",
+          s.number "skill.number",
+          s.start_time "skill.start_time",
+          s.end_time "skill.end_time",
+          s.create_time "skill.create_time"
+        from success_kill sk
+        inner join skill s on sk.s_id = s.s_id
+        where sk.user_name = #{userName}
+    </select>
+</mapper>
